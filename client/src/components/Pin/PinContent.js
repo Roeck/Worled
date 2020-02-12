@@ -1,8 +1,8 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-// import Typography from "@material-ui/core/Typography";
-// import AccessTime from "@material-ui/icons/AccessTime";
-// import Face from "@material-ui/icons/Face";
+import Typography from "@material-ui/core/Typography";
+import AccessTime from "@material-ui/icons/AccessTime";
+import Face from "@material-ui/icons/Face";
 
 const PinContent = ({ classes }) => {
   return <div>PinContent</div>;
