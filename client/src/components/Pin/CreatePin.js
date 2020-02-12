@@ -30,7 +30,7 @@ const CreatePin = ({ classes }) => {
     data.append("upload_preset", "worled")
     data.append("cloud_name", "rons9n")
     const res = await axios.post(
-      // cloudinary link,
+      "https://api.cloudinary.com/v1_1/rons9n/image/upload",
       data
     )
     return res.data.url
@@ -39,7 +39,7 @@ const CreatePin = ({ classes }) => {
   const handleSubmit = async event => {
     event.preventDefault();
     const url = await handleImageUpload();
-    console.log({ title, image, content });
+    console.log({ title, image, url, content });
   };
   
   return (
