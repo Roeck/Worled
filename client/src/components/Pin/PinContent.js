@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import AccessTime from "@material-ui/icons/AccessTime";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import FaceIcon from "@material-ui/icons/Face";
 import format from 'date-fns/format';
 

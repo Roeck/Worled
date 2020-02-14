@@ -6,6 +6,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
+import { Subscription } from 'react-apollo';
+
 import { useClient } from '../client'; 
 import { GET_PINS_QUERY } from '../graphql/queries';
 import { DELETE_PIN_MUTATION } from '../graphql/mutations';
@@ -21,7 +23,7 @@ const INITIAL_VIEWPORT = {
 
 const Map = ({ classes }) => {
   const client = useClient();
-  const mobileSize = useMediaQuery('(max-width: 650px)');
+  
   const { state, dispatch } = useContext(Context);
   useEffect(() => {
     getPins();
