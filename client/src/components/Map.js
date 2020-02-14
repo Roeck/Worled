@@ -5,6 +5,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
+import { useClient } from '../client'; 
+import { GET_PINS_QUERY } from '../graphql/queries';
 import PinIcon from './PinIcon';
 import Blog from './Blog';
 import Context from '../context';
@@ -16,12 +18,28 @@ const INITIAL_VIEWPORT = {
 };
 
 const Map = ({ classes }) => {
+  const client = useClient();
+  const mobileSize = useMediaQuery('(max-width: 650px)');
   const { state, dispatch } = useContext(Context);
+  useEffect(() => {
+    getPins();
+  }, []);
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
   const [userPosition, setUserPosition] = useState(null);
   useEffect(() => {
-    getUserPosition()
-  }, [])
+    getUserPosition();
+  }, []);
+  const [popup, setPopup] = useState(null);
+  // remove popup if pin itself is deleted by the author of the pin
+  useEffect(
+    () => {
+      const pinExists =
+        popup && state.pins.findIndex(pin => pin._id === popup._id) > -1;
+      if (!pinExists) setPopup(null);
+    },
+    [state.pins.length]
+  );
+  
 
   const getUserPosition = () => {
     if ("geolocation" in navigator) {
@@ -31,6 +49,11 @@ const Map = ({ classes }) => {
         setUserPosition({ latitude, longitude })
       });
     }
+  };
+
+  const getPins = async () => {
+    const { getPins } = await client.request(GET_PINS_QUERY);
+    dispatch({ type: "GET_PINS", payload: getPins })
   };
 
   const handleMapClick = event => ({ lngLat, leftButton }) => {
@@ -91,6 +114,19 @@ const Map = ({ classes }) => {
             <PinIcon size={40} color="hotpink" />
           </Marker>
         )}
+
+        {/* Created pins */}
+        {state.pins.map(pin => (
+        <Marker
+          key={pin._id}
+          latitude={pin.latitude}
+          longitude={pin.longitude}
+          offsetLeft={-19}
+          offsetTop={-37}
+        >
+          <PinIcon size={40} color="darkblue" />
+        </Marker>
+        ))}
       </ReactMapGL>
 
       {/* Blog area to add pin content */}
