@@ -158,7 +158,7 @@ const Map = ({ classes }) => {
             anchor="top"
             latitude={popup.latitude}
             longitude={popup.longitude}
-            closeOnClick={false}
+            closeonClick={false}
             onClose={() => setPopup(null)}
           >
             <img
