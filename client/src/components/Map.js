@@ -5,6 +5,7 @@ import differenceInMinutes from "date-fns/difference_in_minutes";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { Subscription } from "react-apollo";
 
 import { useClient } from "../client";
@@ -15,7 +16,7 @@ import {
   PIN_UPDATED_SUBSCRIPTION,
   PIN_DELETED_SUBSCRIPTION
 } from "../graphql/subscriptions";
-import PinIcon from "./PinIcon";
+import PinIcon from "../components/PinIcon";
 import Blog from "./Blog";
 import Context from "../context";
 
@@ -27,7 +28,7 @@ const INITIAL_VIEWPORT = {
 
 const Map = ({ classes }) => {
   const client = useClient();
-
+  const mobileSize = useMediaQuery("(max-width: 650px)");
   const { state, dispatch } = useContext(Context);
   useEffect(() => {
     getPins();
@@ -60,12 +61,11 @@ const Map = ({ classes }) => {
     dispatch({ type: "GET_PINS", payload: getPins });
   };
 
-  const handleMapClick = (event) => ({ lngLat, leftButton }) => {
+  const handleMapClick = ({ lngLat, leftButton }) => {
     if (!leftButton) return;
     if (!state.draft) {
       dispatch({ type: "CREATE_DRAFT" });
     }
-
     const [longitude, latitude] = lngLat;
     dispatch({
       type: "UPDATE_DRAFT_LOCATION",
@@ -93,24 +93,25 @@ const Map = ({ classes }) => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={mobileSize ? classes.rootMobile : classes.root}>
       <ReactMapGL
         width="100vw"
         height="calc(100vh - 64px)"
-        mapStyle="mapbox://styles/mapbox/dark-v9"
-        mapboxApiAccessToken="pk.eyJ1Ijoicm9uczluIiwiYSI6ImNrNmlrbjJvdzAxOHEzbnBkdDMzdHZibWkifQ.75HLdYVJ5yLbRl1GfIxYLA"
+        mapStyle="mapbox://styles/mapbox/streets-v9"
+        mapboxApiAccessToken="pk.eyJ1IjoiZGVueXNyZWJlbm9rIiwiYSI6ImNqdTh0anhpejBkNDYzeXBkeTlrbHFmbWoifQ.b0AzSTWSoBqYN7GAbXjTQQ"
+        scrollZoom={!mobileSize}
         onViewportChange={(newViewport) => setViewport(newViewport)}
         onClick={handleMapClick}
         {...viewport}
       >
-        {/* Navigation control */}
+        {/* Navigation Control */}
         <div className={classes.navigationControl}>
           <NavigationControl
             onViewportChange={(newViewport) => setViewport(newViewport)}
           />
         </div>
 
-        {/* Pin for user's current position */}
+        {/* Pin 4 User's Current Position */}
         {userPosition && (
           <Marker
             latitude={userPosition.latitude}
@@ -122,7 +123,7 @@ const Map = ({ classes }) => {
           </Marker>
         )}
 
-        {/* Draft pin */}
+        {/* Draft Pin */}
         {state.draft && (
           <Marker
             latitude={state.draft.latitude}
@@ -134,7 +135,7 @@ const Map = ({ classes }) => {
           </Marker>
         )}
 
-        {/* Created pins */}
+        {/* Created Pins */}
         {state.pins.map((pin) => (
           <Marker
             key={pin._id}
@@ -146,12 +147,12 @@ const Map = ({ classes }) => {
             <PinIcon
               onClick={() => handleSelectPin(pin)}
               size={40}
-              color="highlightNewPin(pin)"
+              color={highlightNewPin(pin)}
             />
           </Marker>
         ))}
 
-        {/* Popup dialog for created pins */}
+        {/* Popup Dialog for Created Pins */}
         {popup && (
           <Popup
             anchor="top"
@@ -167,7 +168,7 @@ const Map = ({ classes }) => {
             />
             <div className={classes.popupTab}>
               <Typography>
-                {popup.latitude.toFixed(6)}, {popup.longitude.toFixed(8)}
+                {popup.latitude.toFixed(6)}, {popup.longitude.toFixed(6)}
               </Typography>
               {isAuthUser() && (
                 <Button onClick={() => handleDeletePin(popup)}>
@@ -179,7 +180,7 @@ const Map = ({ classes }) => {
         )}
       </ReactMapGL>
 
-      {/* Subscriptions for creating/updating/deleting pins */}
+      {/* Subscriptions for Creating / Updating / Deleting Pins */}
       <Subscription
         subscription={PIN_ADDED_SUBSCRIPTION}
         onSubscriptionData={({ subscriptionData }) => {
@@ -205,7 +206,7 @@ const Map = ({ classes }) => {
         }}
       />
 
-      {/* Blog area to add pin content */}
+      {/* Blog Area to add Pin Content */}
       <Blog />
     </div>
   );

@@ -17,13 +17,9 @@ const CreateComment = ({ classes }) => {
 
   const handleSubmitComment = async () => {
     const variables = { pinId: state.currentPin._id, text: comment };
-    const { createComment } = await client.request(
-      CREATE_COMMENT_MUTATION,
-      variables
-    );
+    await client.request(CREATE_COMMENT_MUTATION, variables);
     setComment("");
   };
-
   return (
     <>
       <form className={classes.form}>
@@ -36,7 +32,7 @@ const CreateComment = ({ classes }) => {
         </IconButton>
         <InputBase
           className={classes.input}
-          placeholder="Add comment"
+          placeholder="Add Comment"
           multiline={true}
           value={comment}
           onChange={(e) => setComment(e.target.value)}

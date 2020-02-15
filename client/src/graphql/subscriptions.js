@@ -13,6 +13,8 @@ export const PIN_ADDED_SUBSCRIPTION = gql`
       author {
         _id
         name
+        email
+        picture
       }
       comments {
         text
@@ -20,16 +22,7 @@ export const PIN_ADDED_SUBSCRIPTION = gql`
         author {
           name
           picture
-      }
-      comments {
-          text
-          comments {
-            text
-            createdAt
-            author {
-              name
-              picture
-          }
+        }
       }
     }
   }
@@ -41,8 +34,8 @@ export const PIN_UPDATED_SUBSCRIPTION = gql`
       _id
       createdAt
       title
-      image
       content
+      image
       latitude
       longitude
       author {
@@ -55,6 +48,7 @@ export const PIN_UPDATED_SUBSCRIPTION = gql`
         author {
           name
           picture
+        }
       }
     }
   }

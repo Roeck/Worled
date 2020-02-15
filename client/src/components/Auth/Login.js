@@ -14,7 +14,7 @@ const Login = ({ classes }) => {
   const onSuccess = async (googleUser) => {
     try {
       const idToken = googleUser.getAuthResponse().id_token;
-      const client = new GraphQLClient("BASE_URL", {
+      const client = new GraphQLClient(BASE_URL, {
         headers: { authorization: idToken }
       });
 
