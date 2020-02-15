@@ -21,7 +21,6 @@ const CreateComment = ({ classes }) => {
       CREATE_COMMENT_MUTATION,
       variables
     );
-    dispatchEvent({ type: "CREATE_COMMENT", payload: createComment });
     setComment("");
   };
 

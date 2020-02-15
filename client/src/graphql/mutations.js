@@ -39,8 +39,8 @@ export const CREATE_COMMENT_MUTATION = `
             _id
             createdAt
             title
-            content
             image
+            content
             latitude
             longitude
             author {
