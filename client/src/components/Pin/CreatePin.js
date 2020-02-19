@@ -11,11 +11,11 @@ import SaveIcon from "@material-ui/icons/SaveTwoTone";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 
 import Context from "../../context";
-import { useClient } from "../../client";
 import { CREATE_PIN_MUTATION } from "../../graphql/mutations";
+import { useClient } from "../../client";
 
 const CreatePin = ({ classes }) => {
-  const mobileSize = useMediaQuery("(max-width: 650px");
+  const mobileSize = useMediaQuery("(max-width: 650px)");
   const client = useClient();
   const { state, dispatch } = useContext(Context);
   const [title, setTitle] = useState("");
@@ -33,10 +33,10 @@ const CreatePin = ({ classes }) => {
   const handleImageUpload = async () => {
     const data = new FormData();
     data.append("file", image);
-    data.append("upload_preset", "worled");
-    data.append("cloud_name", "rons9n");
+    data.append("upload_preset", "geopins");
+    data.append("cloud_name", "denrebenok");
     const res = await axios.post(
-      "https://api.cloudinary.com/v1_1/rons9n/image/upload",
+      "https://api.cloudinary.com/v1_1/denrebenok/image/upload",
       data
     );
     return res.data.url;
@@ -50,16 +50,15 @@ const CreatePin = ({ classes }) => {
       const { latitude, longitude } = state.draft;
       const variables = { title, image: url, content, latitude, longitude };
       await client.request(CREATE_PIN_MUTATION, variables);
-
       handleDeleteDraft();
     } catch (err) {
       setSubmitting(false);
-      console.error("Error creating pin", err);
+      console.error("Error creating pin ", err);
     }
   };
 
   return (
-    <form>
+    <form className={classes.form}>
       <Typography
         className={classes.alignCenter}
         component="h2"
@@ -115,7 +114,6 @@ const CreatePin = ({ classes }) => {
           <ClearIcon className={classes.leftIcon} />
           Discard
         </Button>
-
         <Button
           type="submit"
           className={classes.button}
