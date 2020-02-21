@@ -33,10 +33,10 @@ const CreatePin = ({ classes }) => {
   const handleImageUpload = async () => {
     const data = new FormData();
     data.append("file", image);
-    data.append("upload_preset", "geopins");
-    data.append("cloud_name", "denrebenok");
+    data.append("upload_preset", "rons9n");
+    data.append("cloud_name", "cl9ud");
     const res = await axios.post(
-      "https://api.cloudinary.com/v1_1/denrebenok/image/upload",
+      "https://api.cloudinary.com/v1_1/cl9ud/image/upload",
       data
     );
     return res.data.url;
