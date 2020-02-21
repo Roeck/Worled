@@ -28,7 +28,7 @@ export const GET_PINS_QUERY = `
             }
             comments {
                 text
-                createdArt
+                createdAt
                 author {
                     _id
                     name
@@ -37,4 +37,4 @@ export const GET_PINS_QUERY = `
             }
         }
     }
-`
+`;
